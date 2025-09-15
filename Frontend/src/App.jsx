@@ -37,6 +37,7 @@ function App() {
             <Route path="/dashboard/:customerId" element={<CustomerDashboardWrapper />} />
             <Route path="/manager" element={<ServiceManagerDashboard />} />
             <Route path="/technician" element={<TechnicianDashboard />} />
+            <Route path="/technicians" element={<TechnicianDashboard />} />
             <Route path="/new-technician" element={<NewTechnicianForm />} />
           </Routes>
         </main>
