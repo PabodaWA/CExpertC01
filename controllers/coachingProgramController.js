@@ -1,5 +1,6 @@
 const CoachingProgram = require('../models/CoachingProgram');
 const ProgramEnrollment = require('../models/ProgramEnrollment');
+const Coach = require('../models/Coach');
 
 // @desc    Get all coaching programs
 // @route   GET /api/programs
@@ -135,7 +136,6 @@ const createCoachingProgram = async (req, res) => {
     const program = await CoachingProgram.create(programData);
     
     // IMPORTANT: Add the program to the coach's assignedPrograms array
-    const Coach = require('../models/Coach');
     const coach = await Coach.findById(req.body.coach);
     if (coach && !coach.assignedPrograms.includes(program._id)) {
       coach.assignedPrograms.push(program._id);
@@ -213,8 +213,6 @@ const updateCoachingProgram = async (req, res) => {
 
     // Handle coach change - update assignedPrograms arrays
     if (newCoachId && oldCoachId !== newCoachId) {
-      const Coach = require('../models/Coach');
-      
       // Remove program from old coach's assignedPrograms
       await Coach.findByIdAndUpdate(oldCoachId, {
         $pull: { assignedPrograms: req.params.id }

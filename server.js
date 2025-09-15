@@ -5,6 +5,7 @@ const repairRoutes = require('./routes/repairRequestRoutes');
 const feedbackRoutes = require('./routes/feedbackRoutes');
 const technicianRoutes = require('./routes/technicianRoutes');
 const userRoutes = require('./routes/userRoutes');
+const coachingProgramRoutes = require('./routes/coachingProgramRoutes');
 
 require('dotenv').config();
 
@@ -25,6 +26,7 @@ app.use('/api/repairs', repairRoutes);
 app.use('/api/feedbacks', feedbackRoutes);
 app.use('/api/technicians', technicianRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/programs', coachingProgramRoutes);
 
 
 const playerRoutes = require('./routes/players');

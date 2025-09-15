@@ -11,8 +11,8 @@ const Header = () => {
   const navItems = [
     { path: '/', label: 'Home' },
     { path: null, label: 'Products' },
-    { path: null, label: 'Coaching Program' },
-    { path: null, label: 'Ground Booking' },
+    { path: '/programs', label: 'Coaching Program' },
+    { path: '/dashboard', label: 'Dashboard' },
   ];
 
   const handleMyRequestClick = () => {
@@ -43,12 +43,24 @@ const Header = () => {
             {/* Center - Navigation Items */}
             <div className="flex items-center space-x-8">
               {navItems.map((item) => (
-                <span
-                  key={item.label}
-                  className="px-6 py-3 rounded text-white text-base font-medium cursor-default"
-                >
-                  {item.label}
-                </span>
+                item.path ? (
+                  <Link
+                    key={item.label}
+                    to={item.path}
+                    className={`px-6 py-3 rounded text-white text-base font-medium transition-colors ${
+                      location.pathname === item.path ? 'bg-white bg-opacity-20' : 'hover:bg-white hover:bg-opacity-10'
+                    }`}
+                  >
+                    {item.label}
+                  </Link>
+                ) : (
+                  <span
+                    key={item.label}
+                    className="px-6 py-3 rounded text-white text-base font-medium cursor-default"
+                  >
+                    {item.label}
+                  </span>
+                )
               ))}
               
               {/* Repair Dropdown */}

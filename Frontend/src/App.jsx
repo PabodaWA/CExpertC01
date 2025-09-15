@@ -6,6 +6,9 @@ import CustomerDashboard from './pages/CustomerDashboard';
 import ServiceManagerDashboard from './pages/ServiceManagerDashboard';
 import TechnicianDashboard from './pages/TechnicianDashboard';
 import Dashboard from './pages/Dashboard';
+import HomePage from './pages/HomePage';
+import ProgramsPage from './pages/ProgramsPage';
+import ProgramDetailsPage from './pages/ProgramDetailsPage';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import NewTechnicianForm from './pages/NewTechnicianForm';
@@ -23,10 +26,13 @@ function App() {
         <Header />
         <main className="flex-1">
           <Routes>
-            <Route path="/" element={<Dashboard />} />
+            <Route path="/" element={<HomePage />} />
+            <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/repair" element={<RepairRequestForm />} />
             <Route path="/my-requests" element={<MyRequestsPage />} />
-            <Route path="/coaching" element={<Dashboard />} />
+            <Route path="/programs" element={<ProgramsPage />} />
+            <Route path="/programs/:id" element={<ProgramDetailsPage />} />
+            <Route path="/coaching" element={<ProgramsPage />} />
             <Route path="/ground-booking" element={<Dashboard />} />
             <Route path="/dashboard/:customerId" element={<CustomerDashboardWrapper />} />
             <Route path="/manager" element={<ServiceManagerDashboard />} />

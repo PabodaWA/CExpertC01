@@ -1,10 +1,10 @@
 const mongoose = require('mongoose');
 
 const coachSchema = new mongoose.Schema({
-  CoachId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // 👈 Link to User table
-
-  specialization: { type: String }, // e.g. "Batting", "Bowling"
-  experienceYears: { type: Number },
+  userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, // 👈 Link to User table
+  specializations: [{ type: String }], // e.g. ["Batting", "Bowling"]
+  experience: { type: Number, default: 0 },
+  assignedPrograms: [{ type: mongoose.Schema.Types.ObjectId, ref: 'CoachingProgram' }],
 
   availability: [{
     day: { type: String, required: true },
