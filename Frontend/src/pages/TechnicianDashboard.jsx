@@ -81,18 +81,49 @@ const TechnicianDashboard = () => {
   const handleAvailabilityToggle = async (technicianId, currentAvailability) => {
     try {
       const newAvailability = !currentAvailability;
-      await updateTechnician(technicianId, { available: newAvailability });
-      await loadTechnicians(); // Reload to get updated data
+      console.log('Updating technician availability:', { technicianId, newAvailability });
       
-      // Update Service Manager Dashboard if it's open
-      if (window.serviceManagerDashboard && window.serviceManagerDashboard.loadData) {
-        window.serviceManagerDashboard.loadData();
+      // Make the API call
+      const response = await updateTechnician(technicianId, { available: newAvailability });
+      console.log('Update response:', response.data);
+      
+      // Check if the response is successful
+      if (response.status >= 200 && response.status < 300) {
+        // Update the local state immediately for better UX
+        setTechnicians(prevTechnicians => 
+          prevTechnicians.map(tech => 
+            tech._id === technicianId 
+              ? { ...tech, available: newAvailability }
+              : tech
+          )
+        );
+        
+        // Update Service Manager Dashboard if it's open
+        if (window.serviceManagerDashboard && window.serviceManagerDashboard.loadData) {
+          window.serviceManagerDashboard.loadData();
+        }
+        
+        alert(`Availability updated to ${newAvailability ? 'Available' : 'Unavailable'}`);
+      } else {
+        throw new Error(`Unexpected response status: ${response.status}`);
       }
-      
-      alert(`Availability updated to ${newAvailability ? 'Available' : 'Unavailable'}`);
     } catch (error) {
       console.error('Error updating availability:', error);
-      alert('Failed to update availability');
+      console.error('Error response:', error.response?.data);
+      console.error('Error status:', error.response?.status);
+      
+      let errorMessage = 'Failed to update availability';
+      if (error.response?.data?.error) {
+        errorMessage = `Error: ${error.response.data.error}`;
+      } else if (error.response?.status === 404) {
+        errorMessage = 'Technician not found';
+      } else if (error.response?.status === 500) {
+        errorMessage = 'Server error occurred';
+      } else if (error.message) {
+        errorMessage = `Error: ${error.message}`;
+      }
+      
+      alert(errorMessage);
     }
   };
 

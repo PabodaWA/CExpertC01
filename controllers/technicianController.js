@@ -171,15 +171,29 @@ exports.updateTechnician = async (req, res) => {
     const { id } = req.params;
     const { skills, available } = req.body;
 
-    const technician = await Technician.findById(id);
-    if (!technician) return res.status(404).json({ error: 'Technician not found' });
+    console.log('Updating technician:', { id, skills, available });
 
+    const technician = await Technician.findById(id);
+    if (!technician) {
+      console.log('Technician not found with ID:', id);
+      return res.status(404).json({ error: 'Technician not found' });
+    }
+
+    // Update the technician fields
     if (skills) technician.skills = skills;
     if (available !== undefined) technician.available = available;
 
     await technician.save();
-    res.json(technician);
+    
+    // Populate the technician with user details before sending response
+    const populatedTechnician = await Technician.findById(technician._id)
+      .populate('technicianId', 'username email firstName lastName contactNumber');
+    
+    console.log('Technician updated successfully:', populatedTechnician._id);
+    
+    res.json(populatedTechnician);
   } catch (err) {
+    console.error('Error updating technician:', err);
     res.status(500).json({ error: err.message });
   }
 };
